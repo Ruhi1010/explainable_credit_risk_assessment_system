@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan default risk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="layout">
+
+  <main class="entry">
+    <h1>Loan default risk</h1>
+    <p class="lede">Enter the application details. The model estimates how likely this borrower is to default.</p>
+
+    <form id="form">
+      <h2 class="first">Borrower</h2>
+      <div class="row">
+        <label>Age
+          <input type="number" name="person_age" min="18" max="100" step="1" required>
+        </label>
+        <label>Annual income
+          <input type="number" name="person_income" min="1" step="any" required>
+        </label>
+      </div>
+      <div class="row">
+        <label>Home ownership
+          <select name="person_home_ownership" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="RENT">Rent</option>
+            <option value="OWN">Own</option>
+            <option value="MORTGAGE">Mortgage</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </label>
+        <label>Employment length (years)
+          <input type="number" name="person_emp_length" min="0" step="any" required>
+        </label>
+      </div>
+      <div class="row">
+        <label>Credit history length (years)
+          <input type="number" name="cb_person_cred_hist_length" min="0" step="1" required>
+        </label>
+        <fieldset class="seg">
+          <legend>Previous default on file</legend>
+          <div>
+            <label><input type="radio" name="cb_person_default_on_file" value="N" required><span>No</span></label>
+            <label><input type="radio" name="cb_person_default_on_file" value="Y"><span>Yes</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <h2>Loan</h2>
+      <div class="row">
+        <label>Purpose
+          <select name="loan_intent" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="PERSONAL">Personal</option>
+            <option value="EDUCATION">Education</option>
+            <option value="MEDICAL">Medical</option>
+            <option value="VENTURE">Venture</option>
+            <option value="HOMEIMPROVEMENT">Home improvement</option>
+            <option value="DEBTCONSOLIDATION">Debt consolidation</option>
+          </select>
+        </label>
+        <label>Loan amount
+          <input type="number" name="loan_amnt" min="1" step="any" required>
+        </label>
+      </div>
+      <div class="row">
+        <label>Interest rate (%)
+          <input type="number" name="loan_int_rate" min="0" max="100" step="any" required>
+        </label>
+        <label>Loan as share of income
+          <input type="text" name="loan_percent_income" placeholder="Calculated for you" readonly tabindex="-1">
+        </label>
+      </div>
+      <fieldset class="seg grades">
+        <legend>Loan grade</legend>
+        <div>
+          <label><input type="radio" name="loan_grade" value="A" required><span>A</span></label>
+          <label><input type="radio" name="loan_grade" value="B"><span>B</span></label>
+          <label><input type="radio" name="loan_grade" value="C"><span>C</span></label>
+          <label><input type="radio" name="loan_grade" value="D"><span>D</span></label>
+          <label><input type="radio" name="loan_grade" value="E"><span>E</span></label>
+          <label><input type="radio" name="loan_grade" value="F"><span>F</span></label>
+          <label><input type="radio" name="loan_grade" value="G"><span>G</span></label>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" class="primary" id="submit">Assess risk</button>
+        <button type="button" class="ghost" id="sample">Fill sample</button>
+      </div>
+    </form>
+  </main>
+
+  <aside class="result" id="result" data-risk="idle" aria-live="polite">
+    <svg id="dial" viewBox="0 0 300 175" role="img" aria-label="Default probability dial">
+      <path id="track" d="M30 150 A120 120 0 0 1 270 150" pathLength="100"/>
+      <path id="zoneLow" class="zone" d="M30 150 A120 120 0 0 1 270 150" pathLength="100"/>
+      <path id="zoneHigh" class="zone" d="M30 150 A120 120 0 0 1 270 150" pathLength="100"/>
+      <g id="needle">
+        <g id="jitter">
+          <line x1="150" y1="150" x2="150" y2="46"/>
+          <circle cx="150" cy="150" r="9"/>
+        </g>
+      </g>
+      <text x="30" y="171" text-anchor="middle">0%</text>
+      <text x="270" y="171" text-anchor="middle">100%</text>
+    </svg>
+    <p class="value" id="value">–</p>
+    <p class="verdict" id="verdict">No application yet</p>
+    <p class="detail" id="detail">Fill in the form and select Assess risk to see the estimate.</p>
+  </aside>
+
+</div>
+<script src="/static/script.js"></script>
+</body>
+</html>
